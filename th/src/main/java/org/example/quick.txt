@@ -1,0 +1,46 @@
+Ідея
+Для a[i] розділити масив так, що a[i] стоятиме на своєму місці, зліва від нього не буде жодного більшого елементу за a[i], а справа меншого, рекурсивно сортувати кожну частину
+
+Реалізація
+private static int partition(Comparable[] a, int lo, int hi) {
+   int i = lo;
+   int j = hi + 1;
+   Comparable pivot = a[lo];
+
+   while (true) {
+      while (less(a[++i], pivot)) if (i == hi) break;
+      while (less(pivot, a[--j])) if (j == lo) break;
+      if (i >= j) break;
+      exch(a, i, j);
+   }
+
+   exch(a, lo, j);
+   return j;
+}
+
+public static void sort(Comparable[] a) {
+   StdRandom.shuffle(a);
+   sort(a, 0, a.length - 1);
+}
+
+private static void sort(Comparable[] a, int lo, int hi) {
+   if (hi <= lo) return;
+   int j = partition(a, lo, hi);
+   sort(a, lo, j - 1);
+   sort(a, j + 1, hi);
+}
+
+Особливості
+Нестабільний
+Час виконання чутливий до вхідних даних (якщо спочатку не перемішати)
+
+Складність
+Найкращий (pivot ділить майже навпіл)
+~N log N
+O(N log N)
+Середній
+~2 N log N порівнянь і ⅓ N log N обмінів
+O(N log N)
+Найгірший (pivot — найменший або найбільший)
+~N² / 2
+O(N²)
